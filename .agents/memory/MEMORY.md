@@ -1,0 +1,1 @@
+- [Expo preview boot](expo-preview-boot.md) — first capture after restart may precede Metro's initial route bundle; check the completed bundle before debugging a blank screen.

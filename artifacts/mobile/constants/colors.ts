@@ -14,46 +14,46 @@
 
 const colors = {
   light: {
-    // Legacy aliases (kept for backward compatibility)
-    text: '#0a0a0a',
-    tint: '#2f95dc',
-
-    // Core surfaces
-    background: '#ffffff',
-    foreground: '#0a0a0a',
-
-    // Cards / elevated surfaces
-    card: '#f9f9f9',
-    cardForeground: '#0a0a0a',
-
-    // Primary action color (buttons, links, active states)
-    primary: '#2f95dc',
+    text: '#111412',
+    tint: '#173F35',
+    background: '#F6F6F2',
+    foreground: '#111412',
+    card: '#FFFFFF',
+    cardForeground: '#111412',
+    primary: '#173F35',
     primaryForeground: '#ffffff',
-
-    // Secondary / less-emphasis interactive surfaces
-    secondary: '#f0f0f0',
-    secondaryForeground: '#1a1a1a',
-
-    // Muted / subdued elements (dividers, timestamps, placeholders)
-    muted: '#f0f0f0',
-    mutedForeground: '#737373',
-
-    // Accent highlights (badges, selected items, focus rings)
-    accent: '#f0f0f0',
-    accentForeground: '#1a1a1a',
-
-    // Destructive actions (delete, error states)
-    destructive: '#ef4444',
+    secondary: '#E8ECE7',
+    secondaryForeground: '#173F35',
+    muted: '#EBEDE7',
+    mutedForeground: '#626861',
+    accent: '#D8F35B',
+    accentForeground: '#111412',
+    destructive: '#B83A42',
     destructiveForeground: '#ffffff',
-
-    // Borders and input outlines
-    border: '#e5e5e5',
-    input: '#e5e5e5',
+    border: '#DCDDD8',
+    input: '#DCDDD8',
   },
-
-  // Border radius (in px). Sync from the sibling web artifact's --radius
-  // CSS variable. This value applies to cards, buttons, inputs, and modals.
-  radius: 8,
+  dark: {
+    text: '#F1F4EE',
+    tint: '#A9D4B4',
+    background: '#111613',
+    foreground: '#F1F4EE',
+    card: '#1B241F',
+    cardForeground: '#F1F4EE',
+    primary: '#A9D4B4',
+    primaryForeground: '#102016',
+    secondary: '#253129',
+    secondaryForeground: '#E2E9E1',
+    muted: '#202923',
+    mutedForeground: '#A0AAA0',
+    accent: '#D8F35B',
+    accentForeground: '#111412',
+    destructive: '#F07478',
+    destructiveForeground: '#1D1111',
+    border: '#303A33',
+    input: '#303A33',
+  },
+  radius: 20,
 };
 
 export default colors;

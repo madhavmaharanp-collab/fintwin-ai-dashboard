@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: ai
+    description: AI-powered finance insights
 paths:
   /healthz:
     get:
@@ -24,6 +26,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /ai/coach:
+    post:
+      operationId: createAiCoachResponse
+      tags: [ai]
+      summary: Generate an AI finance insight
+      description: Analyzes a user's financial snapshot and returns an educational response with an optional chart.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiCoachInput"
+      responses:
+        "200":
+          description: AI-generated financial insight
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiCoachOutput"
+        "400":
+          description: Invalid request
+        "401":
+          description: Authentication required
+        "502":
+          description: AI provider unavailable
 components:
   schemas:
     HealthStatus:
@@ -33,4 +60,108 @@ components:
           type: string
       required:
         - status
+    AiCoachInput:
+      type: object
+      required: [question, snapshot]
+      properties:
+        question:
+          type: string
+          minLength: 1
+          maxLength: 500
+        snapshot:
+          $ref: "#/components/schemas/FinanceSnapshot"
+    FinanceSnapshot:
+      type: object
+      required: [currency, monthlyIncome, monthlyExpenses, monthlySurplus, savingsRate, netWorth, transactions, goals]
+      properties:
+        currency:
+          type: string
+          enum: [NPR, USD, INR, GBP, EUR, AUD, CAD]
+        monthlyIncome:
+          type: number
+          minimum: 0
+        monthlyExpenses:
+          type: number
+          minimum: 0
+        monthlySurplus:
+          type: number
+        savingsRate:
+          type: number
+        netWorth:
+          type: number
+        transactions:
+          type: array
+          maxItems: 30
+          items:
+            $ref: "#/components/schemas/FinanceSnapshotTransaction"
+        goals:
+          type: array
+          maxItems: 8
+          items:
+            $ref: "#/components/schemas/FinanceSnapshotGoal"
+    FinanceSnapshotTransaction:
+      type: object
+      required: [date, description, category, type, amount]
+      properties:
+        date:
+          type: string
+          maxLength: 30
+        description:
+          type: string
+          maxLength: 100
+        category:
+          type: string
+          maxLength: 50
+        type:
+          type: string
+          enum: [income, expense, transfer]
+        amount:
+          type: number
+          minimum: 0
+    FinanceSnapshotGoal:
+      type: object
+      required: [name, targetAmount, currentAmount, targetDate]
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        targetAmount:
+          type: number
+          minimum: 0
+        currentAmount:
+          type: number
+          minimum: 0
+        targetDate:
+          type: string
+          maxLength: 30
+    AiCoachOutput:
+      type: object
+      required: [answer, chart]
+      properties:
+        answer:
+          type: string
+          minLength: 1
+          maxLength: 4000
+        chart:
+          oneOf:
+            - $ref: "#/components/schemas/AiCoachChart"
+            - type: "null"
+    AiCoachChart:
+      type: object
+      required: [title, labels, values]
+      properties:
+        title:
+          type: string
+          maxLength: 100
+        labels:
+          type: array
+          maxItems: 12
+          items:
+            type: string
+            maxLength: 30
+        values:
+          type: array
+          maxItems: 12
+          items:
+            type: number
 
