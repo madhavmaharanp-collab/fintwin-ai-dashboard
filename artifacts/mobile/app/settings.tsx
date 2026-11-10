@@ -90,7 +90,7 @@ export default function SettingsScreen() {
       </Panel>
       <Panel style={{ gap: 9 }}>
         <Text style={{ color: colors.foreground, fontWeight: '700' }}>Privacy and storage</Text>
-        <Text style={{ color: colors.mutedForeground, fontSize: 12, lineHeight: 19 }}>Transactions, goals, budgets, and sheets are saved locally on this device and are not synced between devices. FinTwin sends only the finance snapshot needed for the AI question you submit. Avoid including account numbers or other sensitive identifiers in chat.</Text>
+        <Text style={{ color: colors.mutedForeground, fontSize: 12, lineHeight: 19 }}>Transactions, goals, budgets, and sheets are saved locally on this device and are not synced between devices. FinTwin sends only the finance snapshot needed for the AI question you submit to OpenAI; if OpenAI is unavailable, the same snapshot may also be sent to Google AI as a fallback. Avoid including account numbers or other sensitive identifiers in chat.</Text>
       </Panel>
     </Screen>
     <Modal visible={sheetModal} transparent animationType="slide" onRequestClose={() => setSheetModal(false)}>
