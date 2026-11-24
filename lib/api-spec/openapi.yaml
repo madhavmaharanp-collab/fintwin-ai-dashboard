@@ -49,8 +49,12 @@ paths:
           description: Invalid request
         "401":
           description: Authentication required
+        "429":
+          description: AI request limit exceeded; retry after the indicated interval
         "502":
           description: AI provider unavailable
+        "503":
+          description: AI service or authentication is not configured or available
 components:
   schemas:
     HealthStatus:
@@ -164,4 +168,3 @@ components:
           maxItems: 12
           items:
             type: number
-

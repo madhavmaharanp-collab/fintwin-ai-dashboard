@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "FinTwin",
@@ -8,9 +9,12 @@
     "scheme": "fintwin",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.fintwin.dashboard"
     },
-    "android": {},
+    "android": {
+      "package": "com.fintwin.dashboard"
+    },
     "web": {
       "favicon": "./assets/images/icon.png",
       "output": "static"
@@ -18,7 +22,15 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#f9f9f9"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

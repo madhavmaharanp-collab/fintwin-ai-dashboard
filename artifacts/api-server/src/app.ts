@@ -1,12 +1,13 @@
 import express, { type Express } from "express";
 import cors from "cors";
-import { clerkMiddleware } from "@clerk/express";
 import pinoHttp from "pino-http";
 import router from "./routes";
 import { logger } from "./lib/logger";
+import { supabaseAuthMiddleware } from "./middlewares/auth";
 
 const app: Express = express();
 
+// Logging middleware
 app.use(
   pinoHttp({
     logger,
@@ -26,11 +27,25 @@ app.use(
     },
   }),
 );
-app.use(cors());
-app.use(clerkMiddleware());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
+// CORS configuration for mobile and web
+app.use(
+  cors({
+    origin: (process.env.CORS_ORIGINS || "http://localhost:5173,http://localhost:8081").split(","),
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
+// Body parsing
+app.use(express.json({ limit: "64kb" }));
+app.use(express.urlencoded({ extended: true, limit: "64kb" }));
+
+// Supabase JWT authentication
+app.use(supabaseAuthMiddleware);
+
+// Routes
 app.use("/api", router);
 
 export default app;

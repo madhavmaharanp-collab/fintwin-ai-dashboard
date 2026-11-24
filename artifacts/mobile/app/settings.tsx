@@ -5,11 +5,13 @@ import { useFinance, type CurrencyCode, type FinanceSheet } from '@/context/Fina
 import { formatMoney, getMonthlySpend } from '@/lib/finance';
 import { Heading, Icon, Panel, Pill, PrimaryButton, Screen, SectionTitle } from '@/components/FinanceUi';
 import { useColors } from '@/hooks/useColors';
+import { useTheme } from '@/context/ThemeContext';
 
 const currencies: CurrencyCode[] = ['NPR', 'USD', 'INR', 'GBP', 'EUR', 'AUD', 'CAD'];
 const categories = ['Housing', 'Food', 'Transport', 'Bills', 'Health', 'Shopping', 'Essentials', 'Other'];
 export default function SettingsScreen() {
   const colors = useColors();
+  const { preference, setPreference } = useTheme();
   const { data, activeSheet, budgets, selectSheet, addSheet, renameSheet, removeSheet, setBudget, setCurrency, setBalances } = useFinance();
   const [sheetModal, setSheetModal] = useState(false);
   const [editingSheet, setEditingSheet] = useState<FinanceSheet | null>(null);
@@ -56,6 +58,13 @@ export default function SettingsScreen() {
   return <>
     <Screen>
       <Heading eyebrow="Manage your workspace" title="Settings" subtitle="Your financial records are saved on this device." />
+      <Panel style={{ gap: 11 }}>
+        <SectionTitle title="Appearance" />
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 7 }}>
+          {(['light', 'dark', 'system'] as const).map((theme) =>
+            <Pill key={theme} label={theme === 'system' ? 'System' : theme === 'light' ? 'Light' : 'Dark'} selected={preference === theme} onPress={() => setPreference(theme)} />)}
+        </View>
+      </Panel>
       <Panel style={{ gap: 13 }}>
         <SectionTitle title="Finance sheets" action="Add sheet" onPress={openNewSheet} />
         {data.sheets.map((sheet) => <View key={sheet.id} style={{ flexDirection: 'row', alignItems: 'center', gap: 9, paddingVertical: 5 }}>

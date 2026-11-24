@@ -15,7 +15,7 @@ export function Screen({ children, withTabs = false, scroll = true, contentStyle
   const web = Platform.OS === 'web';
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={[styles.screen, { backgroundColor: colors.background, paddingTop: web ? 67 : 0 }]}>
-      {scroll ? <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scroll, { paddingBottom: web ? (withTabs ? 120 : 34) : 24 }, contentStyle]}>{children}</ScrollView> : children}
+      {scroll ? <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scroll, { paddingBottom: withTabs ? (web ? 120 : 96) : (web ? 34 : 24) }, contentStyle]}>{children}</ScrollView> : children}
     </SafeAreaView>
   );
 }
@@ -112,20 +112,20 @@ export function formatDate(date: string) {
 
 const styles = StyleSheet.create({
   screen: { flex: 1 },
-  scroll: { paddingHorizontal: 20, paddingTop: 16, gap: 18 },
+  scroll: { width: '100%', maxWidth: 960, alignSelf: 'center', paddingHorizontal: 20, paddingTop: 16, gap: 18 },
   heading: { flexDirection: 'row', alignItems: 'center', gap: 14, marginBottom: 2 },
   eyebrow: { fontSize: 10, letterSpacing: 1.2, fontWeight: '700' },
   title: { fontSize: 27, letterSpacing: -0.5, fontWeight: '700' },
   subtitle: { fontSize: 13, lineHeight: 19 },
-  panel: { borderWidth: 1, borderRadius: 22, padding: 17, gap: 12 },
+  panel: { borderWidth: 1, borderRadius: 14, padding: 17, gap: 12 },
   sectionTitle: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 2 },
   sectionText: { fontSize: 16, fontWeight: '700' },
   action: { fontSize: 12, fontWeight: '700' },
-  button: { minHeight: 50, borderRadius: 16, paddingHorizontal: 18, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 9 },
+  button: { minHeight: 50, borderRadius: 10, paddingHorizontal: 18, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 9 },
   buttonText: { fontSize: 14, fontWeight: '700' },
-  outlineButton: { minHeight: 46, borderWidth: 1, borderRadius: 15, paddingHorizontal: 14, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
+  outlineButton: { minHeight: 46, borderWidth: 1, borderRadius: 10, paddingHorizontal: 14, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
   outlineText: { fontSize: 13, fontWeight: '600' },
-  pill: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, borderWidth: 1 },
+  pill: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10, borderWidth: 1 },
   progressTrack: { height: 7, borderRadius: 10, overflow: 'hidden' },
   progressFill: { height: '100%', borderRadius: 10 },
   metricLabel: { flexDirection: 'row', gap: 6, alignItems: 'center' },

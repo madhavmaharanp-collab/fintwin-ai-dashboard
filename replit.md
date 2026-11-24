@@ -1,45 +1,46 @@
-# [Project name]
+# FinTwin workspace notes
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+## Architecture and status
 
-## Run & Operate
+This pnpm/TypeScript workspace contains:
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `artifacts/mobile`: Expo Router app with Clerk authentication and finance
+  records stored in AsyncStorage by Clerk user ID. Do not silently discard or
+  migrate these records.
+- `artifacts/api-server`: Express API with Supabase bearer-token validation,
+  profile endpoints, `/api/healthz`, and a server-only Gemini coach. Mobile
+  Clerk tokens are incompatible with this Supabase authentication.
+- `artifacts/mockup-sandbox`: Vite component preview, not a web product or PWA.
+- `lib/db`: Drizzle models, not verified against the live database.
+- `lib/api-spec`, `lib/api-zod`, and `lib/api-client-react`: OpenAPI source
+  and generated contracts/client. Regenerate generated artifacts through the
+  existing tooling when changing schemas.
 
-## Stack
+This application is not production-ready. No verified RLS, cloud finance
+storage, mobile Supabase sign-in, password reset, APK or production deployment
+is available yet.
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+## Commands and configuration
 
-## Where things live
+Use [README.md](README.md) for Windows PowerShell installation, development,
+USB, build and test commands, and [.env.example](.env.example) for names.
+The API reads process environment variables; a root `.env` is not loaded
+automatically. Never place secrets in `EXPO_PUBLIC_*` or `VITE_*` variables.
+Avoid logging credentials, access tokens, questions, or financial snapshots.
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+## Database safety
 
-## Architecture decisions
+Inspect the existing Supabase schema first using
+[lib/db/MIGRATIONS.md](lib/db/MIGRATIONS.md). Never run `drizzle-kit push` or
+`push-force` against an existing production database without an independently
+reviewed migration and backup. A direct PostgreSQL connection may bypass RLS,
+especially with the postgres role. RLS and application-level authorization
+must both be verified with multiple real users.
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+## Operations
 
-## Product
-
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
-
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+The API health endpoint is `/api/healthz`. Configure exact `CORS_ORIGINS`,
+TLS termination and the required environment variables before deployment.
+AI limits are per-process, not distributed; a shared enforcement mechanism is
+required for production multi-instance deployments. No credentials or external
+deployment should be performed by an agent without authorization.

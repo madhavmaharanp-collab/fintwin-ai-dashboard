@@ -1,39 +1,56 @@
 /**
  * Semantic design tokens for the mobile app.
- *
- * These tokens mirror the naming conventions used in web artifacts (index.css)
- * so that multi-artifact projects share a cohesive visual identity.
- *
- * Replace the placeholder values below with values that match the project's
- * brand. If a sibling web artifact exists, read its index.css and convert the
- * HSL values to hex so both artifacts use the same palette.
- *
- * To add dark mode, add a `dark` key with the same token names.
- * The useColors() hook will automatically pick it up.
+ * 
+ * Classic Light Theme - Professional, clean, and elegant
+ * Designed for finance applications with accessibility in mind.
  */
 
 const colors = {
   light: {
-    text: '#111412',
-    tint: '#173F35',
-    background: '#F6F6F2',
-    foreground: '#111412',
-    card: '#FFFFFF',
-    cardForeground: '#111412',
-    primary: '#173F35',
+    // Text & Typography
+    text: '#1a1a1a',
+    foreground: '#1a1a1a',
+    
+    // Backgrounds
+    background: '#f9f9f9', // Soft off-white
+    card: '#ffffff',
+    
+    // Text on cards
+    cardForeground: '#1a1a1a',
+    
+    // Primary action - Navy/Charcoal
+    primary: '#1e3a5f',
     primaryForeground: '#ffffff',
-    secondary: '#E8ECE7',
-    secondaryForeground: '#173F35',
-    muted: '#EBEDE7',
-    mutedForeground: '#626861',
-    accent: '#D8F35B',
-    accentForeground: '#111412',
-    destructive: '#B83A42',
+    
+    // Secondary - Light gray
+    secondary: '#e8e8e8',
+    secondaryForeground: '#1e3a5f',
+    
+    // Muted - Subtle grays
+    muted: '#f0f0f0',
+    mutedForeground: '#666666',
+    
+    // Accent - Refined green for finance
+    accent: '#2d8f6f', // Professional teal
+    accentForeground: '#ffffff',
+    
+    // Destructive/Error
+    destructive: '#d32f2f',
     destructiveForeground: '#ffffff',
-    border: '#DCDDD8',
-    input: '#DCDDD8',
+    
+    // Borders & Inputs
+    border: '#e0e0e0',
+    input: '#e0e0e0',
+    
+    // Semantic colors
+    tint: '#2d8f6f', // Same as accent
+    success: '#2e7d32',
+    warning: '#f57c00',
+    error: '#d32f2f',
   },
+  
   dark: {
+    // Dark mode tokens (preserved from original)
     text: '#F1F4EE',
     tint: '#A9D4B4',
     background: '#111613',
@@ -46,14 +63,18 @@ const colors = {
     secondaryForeground: '#E2E9E1',
     muted: '#202923',
     mutedForeground: '#A0AAA0',
-    accent: '#D8F35B',
-    accentForeground: '#111412',
+    accent: '#A9D4B4',
+    accentForeground: '#102016',
     destructive: '#F07478',
     destructiveForeground: '#1D1111',
     border: '#303A33',
     input: '#303A33',
+    success: '#66bb6a',
+    warning: '#ffa726',
+    error: '#ef5350',
   },
-  radius: 20,
+  
+  radius: 12, // Refined border radius for professional look
 };
 
 export default colors;

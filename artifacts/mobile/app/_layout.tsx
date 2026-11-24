@@ -16,6 +16,7 @@ import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/expo';
 import { tokenCache } from '@clerk/expo/token-cache';
 import { setAuthTokenGetter, setBaseUrl } from '@workspace/api-client-react';
 import { FinanceProvider } from '@/context/FinanceContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { Text, View } from 'react-native';
 import { useColors } from '@/hooks/useColors';
 import * as SplashScreen from 'expo-splash-screen';
@@ -26,7 +27,15 @@ SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
 const domain = process.env.EXPO_PUBLIC_DOMAIN;
-if (domain) setBaseUrl(`https://${domain}`);
+const apiUrl = process.env.EXPO_PUBLIC_API_URL || (domain ? `https://${domain}` : undefined);
+if (apiUrl) {
+  const parsed = new URL(apiUrl);
+  const localHttp = __DEV__ && parsed.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(parsed.hostname);
+  if ((!localHttp && parsed.protocol !== 'https:') || parsed.username || parsed.password) {
+    throw new Error('EXPO_PUBLIC_API_URL must use HTTPS, except for localhost during development.');
+  }
+  setBaseUrl(apiUrl);
+}
 
 function ApiAuthBridge() {
   const { getToken, isSignedIn } = useAuth();
@@ -53,7 +62,7 @@ function RootLayoutNav() {
   );
 }
 
-export default function RootLayout() {
+function RootLayoutContent() {
   const colors = useColors();
   const [fontsLoaded, fontError] = useFonts({
     Inter_400Regular,
@@ -66,6 +75,7 @@ export default function RootLayout() {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
     }
+
   }, [fontsLoaded, fontError]);
 
   if (!fontsLoaded && !fontError) return null;
@@ -99,4 +109,8 @@ export default function RootLayout() {
       </ErrorBoundary>
     </SafeAreaProvider>
   );
+}
+
+export default function RootLayout() {
+  return <ThemeProvider><RootLayoutContent /></ThemeProvider>;
 }
